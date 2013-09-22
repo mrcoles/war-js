@@ -1,4 +1,5 @@
-var _ = require('./underscore.js');
+var _ = require('underscore');
+var stats = require("stats-lite");
 
 var suitIdToName = ['Hearts', 'Spades', 'Diamonds', 'Clubs'];
 var numberIdToName = ['Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace'];
@@ -56,10 +57,12 @@ function playWar(verbose) {
         return count;
     }
 
-    function playTurn(piles, isWar) {
+    function playTurn(piles, isWar, totalTries) {
         piles = piles || _.map(players, function() { return []; });
+        totalTries = totalTries || 0;
 
         var tries = isWar ? 4 : 1;
+        totalTries += tries;
         while (tries--) {
             _.each(players, function(cards, i) {
                 cards.length && piles[i].push(cards.shift());
@@ -70,25 +73,38 @@ function playWar(verbose) {
 
         if (lastCards[0].numberId == lastCards[1].numberId) {
             verbose && console.log('WAR!');
-            playTurn(piles, true);
+            return playTurn(piles, true, totalTries);
         } else {
             var winner = (lastCards[0].numberId > lastCards[1].numberId ? 0 : 1);
             verbose && console.log(turns + ':\t' + lastCards[0].name() + ' vs ' + lastCards[1].name() + ' => player ' + winner);
             Array.prototype.push.apply(players[winner], _.flatten(piles));
+            return totalTries;
         }
     }
 
     while (hasCardsCount() > 1) {
-        turns++;
-
-        playTurn();
+        turns += playTurn();
     }
+
     verbose && console.log('GAME OVER! ' + players[0].length + ' to ' + players[1].length);
     return turns;
 }
 
 
-for (var i=0, turns; i<100; i++) {
-    turns = playWar();
-    console.log('turns ' + turns);
+var results = [];
+for (var i=0, turns; i<10000; i++) {
+    turns = playWar() / 26;
+    results.push(turns);
 }
+
+console.log("mean: %s", stats.mean(results));
+console.log("median: %s", stats.median(results));
+console.log("mode: %s", stats.mode(results));
+console.log("variance: %s", stats.variance(results));
+console.log("standard deviation: %s", stats.stdev(results));
+console.log("min: %s", Math.min.apply(null, results));
+console.log("max: %s", Math.max.apply(null, results));
+console.log("1st percentile: %s", stats.percentile(results, 0.01));
+console.log("2nd percentile: %s", stats.percentile(results, 0.02));
+console.log("95th percentile: %s", stats.percentile(results, 0.95));
+console.log("99th percentile: %s", stats.percentile(results, 0.99));

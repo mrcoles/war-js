@@ -1,0 +1,23 @@
+{
+  "name": "war-js",
+  "version": "0.0.0",
+  "description": "Simulator of the classic card game, war.",
+  "main": "war.js",
+  "dependencies": {
+    "stats-lite": "~1.0.0",
+    "underscore": "~1.5.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mrcoles/war-js.git"
+  },
+  "author": "Peter Coles",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mrcoles/war-js/issues"
+  }
+}
