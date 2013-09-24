@@ -1,10 +1,11 @@
-
 War.js
 ======
 
 A JavaScript simulator of the card game war.
 
-It runs a bunch of deterministic games of war from a random shuffling of cards and counts how many times cards have to be flipped before the game is won by either player. For easier understanding, the number of flips are then divided by 26, to represent the number of flips required for each player to cycle through their entire first set of cards, which symbolizes going through the entire deck.
+It runs a bunch of deterministic games of war from a random shuffling of cards and counts how many times cards have to be flipped before the game is won by either player.
+
+*Units:* the stats are all computed from the number of times the equivalent of a deck is cycled, i.e., 26 card flips, i.e., half a deck.
 
 An example output of the script running on 10,000 trials:
 
